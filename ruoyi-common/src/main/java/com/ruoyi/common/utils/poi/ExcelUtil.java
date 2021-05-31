@@ -229,6 +229,10 @@ public class ExcelUtil<T>
             {
                 // 从第2行开始取数据,默认第一行是表头.
                 Row row = sheet.getRow(i);
+                if(row == null)
+                {
+                    continue;
+                }
                 T entity = null;
                 for (Map.Entry<Integer, Field> entry : fieldsMap.entrySet())
                 {
@@ -537,7 +541,10 @@ public class ExcelUtil<T>
         }
         else if (ColumnType.NUMERIC == attr.cellType())
         {
-            cell.setCellValue(StringUtils.contains(Convert.toStr(value), ".") ? Convert.toDouble(value) : Convert.toInt(value));
+            if (StringUtils.isNotNull(value))
+            {
+                cell.setCellValue(StringUtils.contains(Convert.toStr(value), ".") ? Convert.toDouble(value) : Convert.toInt(value));
+            }
         }
         else if (ColumnType.IMAGE == attr.cellType())
         {
